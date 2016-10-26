@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+class_path="${HOME}/.hosts"
+backup="$class_path/backup"
+custom="$class_path/custom.cfg"
+default="# custom"
+
+if [ ! -d "$class_path" ]; then
+	mkdir "$class_path"
+fi 
+
+if [ ! -d "$backup" ]; then
+	mkdir "$backup"
+fi
+ 
+if [ ! -f "$custom" ]; then
+        touch "$custom"
+	echo $default > $custom
+fi
+
+sudo mv /etc/hosts $backup/hosts-$(date +%F-%H%M%S).bak
+#wget https://raw.githubusercontent.com/racaljk/hosts/master/hosts -O fetchedhosts
+wget https://coding.net/u/scaffrey/p/hosts/git/raw/master/hosts -O fetchedhosts
+sed -i "s/localhost/localhost $(hostname)/g" fetchedhosts
+sed -i "s/broadcasthost/broadcasthost $(hostname)/g" fetchedhosts
+cat $custom >> fetchedhosts
+
+sudo mv fetchedhosts /etc/hosts
+echo Success.
+
