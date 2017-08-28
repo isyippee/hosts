@@ -18,8 +18,7 @@ if [ ! -f "$custom" ]; then
 fi
 
 sudo mv /etc/hosts $backup/hosts-$(date +%F-%H%M%S).bak
-#wget https://raw.githubusercontent.com/racaljk/hosts/master/hosts -O fetchedhosts
-wget https://coding.net/u/scaffrey/p/hosts/git/raw/master/hosts -O fetchedhosts
+wget https://coding.net/u/scaffrey/p/hosts/git/raw/master/hosts-files/hosts -O fetchedhosts
 sed -i "s/localhost/localhost $(hostname)/g" fetchedhosts
 sed -i "s/broadcasthost/broadcasthost $(hostname)/g" fetchedhosts
 cat $custom >> fetchedhosts
